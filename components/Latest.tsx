@@ -1,42 +1,27 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
+import { memo, useCallback, useRef, useState } from 'react';
+import { FlatList, Image } from 'react-native';
 import { latest } from '../constants/dummy';
 import { ILatest } from '../constants/interface';
-import { colors, fonts, sizes } from '../constants/theme';
-
-interface LatestProps {
-  data: ILatest;
-}
+import {
+  StyledLinearGradient,
+  StyledText,
+  StyledView,
+} from '../constants/styles';
+import { colors } from '../constants/theme';
 
 const Pagination = (props: { index: number }) => {
   return (
-    <View
-      style={{
-        position: 'absolute',
-        bottom: 30,
-        left: 38,
-        width: '100%',
-        borderRadius: 4,
-        marginHorizontal: 2,
-        flexDirection: 'row',
-      }}
-    >
+    <StyledView className='absolute bottom-8 left-8 w-full rounded-md mx-2 flex-row'>
       {latest.map((_, i) => (
-        <View
+        <StyledView
           key={i}
+          className='w-1.5 h-1.5 rounded-full mx-[0.95]'
           style={[
-            {
-              width: 8,
-              height: 8,
-              borderRadius: 8,
-              marginHorizontal: 2,
-            },
             props.index === i
               ? {
                   backgroundColor: colors.primary,
-                  width: 28,
-                  height: 8,
+                  width: 24,
+                  height: 6,
                   borderRadius: 8,
                 }
               : {
@@ -46,20 +31,14 @@ const Pagination = (props: { index: number }) => {
           ]}
         />
       ))}
-    </View>
+    </StyledView>
   );
 };
 
-const Slide = (props: LatestProps) => {
+const Slide = memo((props: { data: ILatest }) => {
   const { data } = props;
   return (
-    <View
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-      }}
-    >
+    <StyledView className='justify-center items-center flex-1'>
       <Image
         source={{ uri: data.image }}
         resizeMode='cover'
@@ -68,60 +47,27 @@ const Slide = (props: LatestProps) => {
           width: 374,
         }}
       />
-      <LinearGradient
+      <StyledLinearGradient
+        className='z-[4] h-[45%] w-full absolute bottom-0'
         colors={['#000000', 'transparent']}
-        style={{
-          zIndex: 4,
-          height: '45%',
-          width: '100%',
-          position: 'absolute',
-          bottom: 0,
-        }}
-        start={{ x: 0, y: 1.5 }}
+        start={{ x: 0, y: 1.1 }}
         end={{ x: 0, y: 0 }}
       />
-      <View
-        style={{
-          position: 'absolute',
-          padding: 10,
-          bottom: 24,
-          left: 10,
-          zIndex: 4,
-        }}
-      >
+      <StyledView className='absolute p-10 bottom-0 -left-5 z-[4] flex-col space-y-2 -mb-2'>
         {data.id === 0 ? (
-          <View
-            style={{
-              backgroundColor: colors.primary,
-              padding: 5,
-              width: 60,
-              alignItems: 'center',
-              borderRadius: 7,
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: fonts.medium,
-                color: colors.white,
-                fontSize: sizes.medium,
-              }}
-            >
+          <StyledView className='bg-orange-500 p-1 w-16 items-center rounded-md'>
+            <StyledText className='font-medium text-white text-xl'>
               Latest
-            </Text>
-          </View>
+            </StyledText>
+          </StyledView>
         ) : null}
-        <Text
-          style={{
-            fontFamily: fonts.medium,
-            color: colors.white,
-          }}
-        >
+        <StyledText className='font-semibold text-xl text-white'>
           {data.title}
-        </Text>
-      </View>
-    </View>
+        </StyledText>
+      </StyledView>
+    </StyledView>
   );
-};
+});
 
 const Latest = () => {
   const [index, setIndex] = useState(0);
@@ -140,21 +86,17 @@ const Latest = () => {
       setIndex(roundIndex);
   }, []);
 
-  useEffect(() => {
-    console.warn(index);
-  }, [index]);
-
   const optimizations = {
     initialNumToRender: 0,
     maxToRenderPerBatch: 1,
     removeClippedSubviews: true,
     scrollEventThrottle: 16,
-    windowSize: 2,
+    windowSize: 4,
     keyExtractor: useCallback((e: any) => e.id, []),
     getItemLayout: useCallback(
       (_: any, index: any) => ({
         index,
-        length: 400,
+        length: 425,
         offset: index * 400,
       }),
       [],
@@ -171,7 +113,6 @@ const Latest = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         onScroll={onScroll}
-        {...optimizations}
       />
       <Pagination index={index} />
     </>
