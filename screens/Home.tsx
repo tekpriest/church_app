@@ -1,12 +1,6 @@
 import { useIsFocused } from '@react-navigation/core';
-import {
-  Image,
-  SafeAreaView,
-  StatusBar,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { FlatList, SafeAreaView, StatusBar } from 'react-native';
+import ActionCard from '../components/ActionCard';
 import Latest from '../components/Latest';
 import assets from '../constants/assets';
 import {
@@ -14,7 +8,8 @@ import {
   StyledText,
   StyledView,
 } from '../constants/styles';
-import { colors, fonts, shadows, sizes } from '../constants/theme';
+import { colors } from '../constants/theme';
+import { Actions } from '../routes';
 
 const FocusedStatusBar = (props: any) => {
   const isFocused = useIsFocused();
@@ -30,8 +25,8 @@ const Home = () => {
         <StyledView className='flex-row justify-between items-start mb-8'>
           <StyledView className='flex-col'>
             <StyledView>
-              <StyledView className='h-1.5 w-[65] bg-zinc-400 mb-2 rounded-full' />
-              <StyledView className='h-1.5 w-10 bg-zinc-400 mb-8 rounded-full' />
+              <StyledView className='h-2 w-12.5 bg-zinc-400 mb-1.5 rounded-full' />
+              <StyledView className='h-2 w-12 bg-zinc-400 mb-8 rounded-full' />
             </StyledView>
             <StyledText className='text-black text-4xl font-bold'>
               Home
@@ -43,18 +38,15 @@ const Home = () => {
           />
         </StyledView>
         <Latest />
-        <View
-          style={{
-            width: '100%',
-            borderRadius: sizes.large,
-            ...shadows.medium,
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}
-        >
-          <Text>Test</Text>
-          <TextInput placeholder='Search...' style={{ flex: 1 }} />
-        </View>
+      </StyledView>
+      <StyledView className='flex-1 px-5 -z-20 bg-gray-100 mt-2'>
+        <FlatList
+          data={Actions}
+          numColumns={2}
+          keyExtractor={(item) => item.title}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => <ActionCard action={item} />}
+        />
       </StyledView>
     </SafeAreaView>
   );

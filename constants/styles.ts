@@ -1,13 +1,19 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { styled } from 'nativewind';
-import { Image, Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledImage = styled(Image);
 const StyledFlatlist = styled(FlatList);
 const StyledLinearGradient = styled(LinearGradient);
+const StyledTouchableOpacity = styled(TouchableOpacity);
 
 export {
   StyledView,
@@ -15,4 +21,5 @@ export {
   StyledImage,
   StyledFlatlist,
   StyledLinearGradient,
+  StyledTouchableOpacity,
 };

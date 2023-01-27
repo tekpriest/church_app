@@ -3,6 +3,7 @@ import { FlatList, Image } from 'react-native';
 import { latest } from '../constants/dummy';
 import { ILatest } from '../constants/interface';
 import {
+  StyledImage,
   StyledLinearGradient,
   StyledText,
   StyledView,
@@ -11,7 +12,7 @@ import { colors } from '../constants/theme';
 
 const Pagination = (props: { index: number }) => {
   return (
-    <StyledView className='absolute bottom-8 left-8 w-full rounded-md mx-2 flex-row'>
+    <StyledView className='absolute bottom-8 left-3 w-full rounded-md mx-2 flex-row'>
       {latest.map((_, i) => (
         <StyledView
           key={i}
@@ -39,13 +40,10 @@ const Slide = memo((props: { data: ILatest }) => {
   const { data } = props;
   return (
     <StyledView className='justify-center items-center flex-1'>
-      <Image
+      <StyledImage
         source={{ uri: data.image }}
         resizeMode='cover'
-        style={{
-          height: 280,
-          width: 374,
-        }}
+        className='h-36 w-[374]'
       />
       <StyledLinearGradient
         className='z-[4] h-[45%] w-full absolute bottom-0'
@@ -91,23 +89,23 @@ const Latest = () => {
     maxToRenderPerBatch: 1,
     removeClippedSubviews: true,
     scrollEventThrottle: 16,
-    windowSize: 4,
+    windowSize: 1,
     keyExtractor: useCallback((e: any) => e.id, []),
     getItemLayout: useCallback(
       (_: any, index: any) => ({
         index,
-        length: 425,
-        offset: index * 400,
+        length: 525,
+        offset: index * 500,
       }),
       [],
     ),
   };
 
   return (
-    <>
+    <StyledView className='mb-10'>
       <FlatList
         data={latest}
-        style={{ borderRadius: 15 }}
+        style={{ borderRadius: 15, marginBottom: 12 }}
         renderItem={({ item }) => <Slide data={item} />}
         pagingEnabled
         horizontal
@@ -115,7 +113,7 @@ const Latest = () => {
         onScroll={onScroll}
       />
       <Pagination index={index} />
-    </>
+    </StyledView>
   );
 };
 
